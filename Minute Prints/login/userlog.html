@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="images\Minute Prints.jpg" alt="Logo">
+            </a>
+        </div>
+    </nav>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="border-1 border-black p-4" id="box">
+            <div id="signin" style="display: block;">
+                <div class="form">
+                    <p class="form-title">USER LOGIN</p>
+                    <div class="input-container">
+                       <input placehoLder="Enter email" type="email" id="emailLogin">
+                    </div>
+                    <div class="input-container">
+                       <input placeholder="Enter password" type="password" id="passwordLogin">
+                    </div>
+                    <button class="submit" type="submit" id="login">
+                        Log in
+                    </button>
+
+                    <p class="signup-link">
+                        No account?
+                        <a href="" id="signUpC" onclick="changeToSignUp(event)">Sign up</a>
+                    </p>
+                    <p class="signup-link">
+                        Forget password?
+                        <a href="" id="reset" onclick="changeToReset(event)">Reset</a>
+                    </p>
+                </div>
+            </div>
+            <div id="signup" style="display: none;">
+                <div class="form">
+                    <p class="title">Register </p>
+                    <p class="form-title">NEW USER?</p>
+                    <p class="message">Signup now and get full access to our app. </p>
+                        <label>
+                            <input required="" placeholder="" type="text" class="input" id="nameRegister">
+                            <span>Name</span>
+                        </label>
+                    <label>
+                        <input required="" placeholder="" type="number" class="input" id="phnoRegister">
+                        <span>Mob No.</span>
+                    </label>
+                    <label>
+                        <input required="" placeholder="" type="email" class="input" id="emailRegister">
+                        <span>Email</span>
+                    </label>
+
+                    <label>
+                        <input required="" placeholder="" type="password" class="input" id="password1Register">
+                        <span>Password</span>
+                    </label>
+                    <label>
+                        <input required="" placeholder="" type="password" class="input" id="password2Register">
+                        <span>Confirm password</span>
+                    </label>
+                    <button type="submit" class="submit" onclick="changeToSignIn(event)" id="register">Submit</button>
+                    <p class="signin">
+                        Already have an acount ?
+                        <a href="#" onclick="changeToSignIn(event)">Signin</a>
+                    </p>
+                </div>
+            </div>
+            <div id="resetForm" style="display: none;">
+                <form class="form">
+                    <p class="title">Reset password </p>
+                    <p class="message">Reset your password using email.</p>
+                        <label>
+                            <input required="" placeholder="" type="email" class="input" id="emailForget">
+                            <span>email</span>
+                        </label>
+                    <button type="submit" class="submit" id="forget">Sent</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <script src="./script.js"></script>
+    <script type="module" src="firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+    import { getDatabase,set,ref,update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+    const firebaseConfig = {
+  apiKey: "AIzaSyBCvwUbbIW7uKEYUIMgLyZZOiQMPI8rKtw",
+  authDomain: "minute-prints.firebaseapp.com",
+  projectId: "minute-prints",
+  storageBucket: "minute-prints.appspot.com",
+  messagingSenderId: "612027663649",
+  appId: "1:612027663649:web:005a76af6c049d40036a60",
+  measurementId: "G-TXRQ1548X2"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app); 
+    const auth = getAuth();
+   
+    register.addEventListener('click',(e) => {
+
+      var name = document.getElementById('nameRegister').value; 
+      var email = document.getElementById('emailRegister').value;
+      var password = document.getElementById('password1Register').value;
+      var mob = document.getElementById('phnoRegister').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+   
+      set(ref(database,'users/' + user.uid),{
+        name: name,
+        email: email,
+        mob: mob,
+        password: password
+      })
+    alert('user created!');
+
+
+
+
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    alert(errorMessage);
+    // ..
+    });
+
+    });
+
+    login.addEventListener('click',(e) => {
+        var email = document.getElementById('emailLogin').value;
+      var password = document.getElementById('passwordLogin').value;
+     
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+    // Signed in 
+         const user = userCredential.user;
+         const dt = new Date();
+         update(ref(database,'users/' + user.uid),{
+         last_login: dt,
+      })
+    
+    //creating a node for current id
+    let a=user.uid;  
+    set(ref(database,'current_uid/'),{
+        user_id: a,
+      })
+
+    alert('User logged in!');
+
+    window.location.href = 'C:\\Users\\USER\\Desktop\\MInute Print\\Minute Prints\\index.html';
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage);
+  });
+
+    });
+  </script>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <title>Online-payment</title>
+    <link href="online.css" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <img class="image" src="images/Minute Prints.jpg" alt="MinutePrints" width="90" height="40">
+        <ul id="nav-bar">
+            <li >
+                <a href="file:///C:/Users/USER/Desktop/MInute%20Print/Minute%20Prints/login/home.html">Home</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <h1>Online Payment</h1>
+        <div>
+            <span>Amount : </span><span id="p1"></span>
+        </div>
+        <button class="Btn" id="paybutton" onclick="startPayment()">
+            Pay 
+
+            <svg class="svgIcon" viewBox="0 0 576 512"><path d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z"></path></svg>
+        </button>
+
+    </div>
+    <script>
+        function startPayment() {
+            amt=parseInt(document.getElementById("p1").innerHTML);
+          // Create a new instance of Razorpay
+          var options = {
+            key: 'rzp_test_n3tBjWbmOK4zNM', // Replace with your own Razorpay API key
+            amount: parseInt(amt)*100, // Amount in paisa (e.g., 10000 for ₹100)
+            currency: 'INR', // Currency code (e.g., INR, USD)
+            name: 'MINUTE PRINT', // Your store name
+            description: 'Purchase', // Payment description
+            image:'images\img1.jpg',
+            handler: function (response) {
+              // This function is called after a successful payment
+              alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
+              // You can perform further actions here, such as updating the database or displaying a success message to the user
+            },
+           // prefill: {
+             // name: fullname, // Customer's name
+              //email: email, // Customer's email address
+              //contact: phone // Customer's phone number
+            //},
+            theme: {
+              color: '#F37254' // Customize the Razorpay checkout button color
+            }
+          };
+    
+          var rzp = new Razorpay(options);
+          rzp.open();
+        }
+var firebaseConfig1 = {
+    apiKey: "AIzaSyBCvwUbbIW7uKEYUIMgLyZZOiQMPI8rKtw",
+    authDomain: "minute-prints.firebaseapp.com",
+    projectId: "minute-prints",
+    storageBucket: "minute-prints.appspot.com",
+    messagingSenderId: "612027663649",
+    appId: "1:612027663649:web:005a76af6c049d40036a60",
+    measurementId: "G-TXRQ1548X2"
+  };
+   
+firebase.initializeApp(firebaseConfig1);
+var db= firebase.firestore();
+var database = firebase.database();
+var idRef1 = db.collection("idlist").doc("id");
+idRef1.get()
+.then(function(doc) {
+
+   // Access the document data
+   var id = doc.data()["id"];
+   var shopname=doc.data()["shopname"];
+   var district=doc.data()["district"];
+   var shopname=shopname.toString();
+   var district=district.toString();
+   var id =id.toString();
+
+   var dataRef12 =db.collection("ShopList/"+district+"/"+shopname+"/").doc(id);
+   dataRef12.get().then(function(doc){
+   var fieldValue = doc.data()["amount"]; 
+   document.getElementById("p1").innerHTML=fieldValue;
+   })
+})
+.catch((error) => {
+   console.error("Error ", error);
+ });
+</script> 
+</body>
+
+</html>

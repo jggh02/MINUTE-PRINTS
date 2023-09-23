@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+<link rel="stylesheet" href="./style1.css">
+
+</head>
+<body>
+
+  <!-- Background & animion & navbar & title -->
+    <div class="container-fluid">
+  <!-- Background animtion-->
+      <div class="background">
+         <div class="cube"></div>
+         <div class="cube"></div>
+         <div class="cube"></div>
+         <div class="cube"></div>
+        <div class="cube"></div>
+      </div>
+  <!-- header -->
+     <header>
+  <!-- navbar -->
+       <nav>
+          <ul>
+             
+              <li><a href="aboutus.html">About</a></li>
+              <li><a href="contactus.html">Contact</a></li>
+           </ul>
+         </nav>
+  <!-- logo -->
+        <div class="logo"><span>N</span></div>
+  <!-- title & content -->
+        <section class="header-content">
+           <h1>Welcome</h1>
+          <p> Welcome to Minute Print. A printing management website for<br>
+             Unlocking Seamless Print Management in Minutes!</p>
+          <button type="submit" id="mainBtn">Get Started</button>
+        </section>
+    </header>
+    <script>
+      document.getElementById("mainBtn").addEventListener("click", redirectFunction);
+      
+      function redirectFunction(){
+          window.location.href = "home.html";
+          // You can also use window.location.replace method
+          
+          /*
+           * window.location.replace("https://www.example.com");
+           */
+      }
+  </script>
+</body>
+</html>

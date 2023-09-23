@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="images\Minute Prints.jpg" alt="Logo">
+            </a>
+        </div>
+    </nav>
+                <div class="home" id="h11">
+                    <h1>HELLO USER</h1>
+                    <p class="home-title">WELCOME TO OUR WEBSITE!</p>
+
+                        You are a
+                        <select id="firstDropdown">
+                          <option value="">Select</option>
+                          
+                          <option value="option2">CUSTOMER</option>
+                          <option value="option3">SHOP OWNER</option>
+                        </select>
+                        <button class="submit" onclick="selects()" type="submit" id="home">
+                            Submit
+                        </button>
+
+                    </p>
+                </div>
+</body>
+<script>
+function selects(){
+
+    var first = document.getElementById('firstDropdown').value; 
+
+    if(first=="option2")
+    {
+        window.location.assign("userlog.html");
+    }
+    else if(first=="option3")
+    {
+        window.location.assign("shoplog.html");
+    }
+}
+</script>
+</html>
